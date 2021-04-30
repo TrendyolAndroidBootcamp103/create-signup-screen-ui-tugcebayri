@@ -1,17 +1,21 @@
-package school.cactus.succulentshop
+package school.cactus.succulentshop.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
+import school.cactus.succulentshop.R
 import school.cactus.succulentshop.databinding.ActivitySignUpBinding
+import school.cactus.succulentshop.validation.MailValidator
+import school.cactus.succulentshop.validation.PasswordValidator
+import school.cactus.succulentshop.validation.UsernameValidator
 
 class SignUpActivity: AppCompatActivity() {
     private lateinit var binding : ActivitySignUpBinding
 
     private val mailValidator = MailValidator()
     private val usernameValidator = UsernameValidator()
-    private val signUpPasswordValidator = SignUpPasswordValidator()
+    private val passwordValidator = PasswordValidator()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,12 +40,12 @@ class SignUpActivity: AppCompatActivity() {
     }
 
     private fun navigateToSignInButton() {
-        val intent = Intent(this,LoginActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 
     private fun TextInputLayout.validate() {
-        val errorMessage = validator().validate(editText!!.text.toString())
+        val errorMessage = validator().validateForSignUp(editText!!.text.toString())
         errorMessage?.let {
             error = resolveAsString(it)
         }
@@ -53,7 +57,7 @@ class SignUpActivity: AppCompatActivity() {
     private fun TextInputLayout.validator() = when (this) {
         binding.signUpEmail -> mailValidator
         binding.signUpUsername -> usernameValidator
-        binding.signUpPassword -> signUpPasswordValidator
+        binding.signUpPassword -> passwordValidator
         else -> throw IllegalArgumentException("Cannot find any validator for the given TextInputLayout")
     }
 }

@@ -1,10 +1,13 @@
-package school.cactus.succulentshop
+package school.cactus.succulentshop.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
+import school.cactus.succulentshop.R
 import school.cactus.succulentshop.databinding.ActivityLoginBinding
+import school.cactus.succulentshop.validation.IdentifierValidator
+import school.cactus.succulentshop.validation.PasswordValidator
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -32,12 +35,12 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToSignUpActivity() {
-        val intent = Intent(this,SignUpActivity::class.java)
+        val intent = Intent(this, SignUpActivity::class.java)
         startActivity(intent)
     }
 
     private fun TextInputLayout.validate() {
-        val errorMessage = validator().validate(editText!!.text.toString())
+        val errorMessage = validator().validateForSignIn(editText!!.text.toString())
         error = errorMessage?.resolveAsString()
         isErrorEnabled = errorMessage != null
     }
