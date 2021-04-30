@@ -6,4 +6,15 @@
     <string name="create_an_account">Create an account</string>
     <string name="this_field_is_required">This field is required.</string>
     <string name="identifier_is_too_short">Identifier is too short.</string>
+    <string name="e_mail">E-mail</string>
+    <string name="username">Username</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="email_is_required">E-mail is required</string>
+    <string name="email_is_invalid">E-mail is invalid</string>
+    <string name="username_is_required">Username is required</string>
+    <string name="username_character_settings">Username can only include a-z, 0-9 and _ characters</string>
+    <string name="username_is_too_short">Username is too short</string>
+    <string name="username_is_too_long">Username is too long</string>
+    <string name="password_is_required">Password is required</string>
 </resources>
