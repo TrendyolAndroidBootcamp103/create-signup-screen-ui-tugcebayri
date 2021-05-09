@@ -1,14 +1,10 @@
-package school.cactus.succulentshop.validation
+package school.cactus.succulentshop.signUp.validation
 
 import school.cactus.succulentshop.R
+import school.cactus.succulentshop.validation.Validator
 
 class PasswordValidator : Validator {
-    override fun validateForSignIn(field: String) = when {
-        field.isEmpty() -> R.string.this_field_is_required
-        else -> null
-    }
-
-    override fun validateForSignUp(field: String) = when {
+    override fun validate(field: String) = when {
         field.isEmpty() -> R.string.password_is_required
         field.length <= 7 -> R.string.password_is_too_short
         field.length >= 40 -> R.string.password_is_too_long
@@ -18,5 +14,4 @@ class PasswordValidator : Validator {
         !field.contains(Regex("[^a-zA-Z0-9]")) -> R.string.password_must_contain_at_least_one_special_character
         else -> null
     }
-
 }
