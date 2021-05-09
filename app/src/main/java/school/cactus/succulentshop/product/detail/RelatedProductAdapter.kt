@@ -32,7 +32,6 @@ class RelatedProductAdapter : ListAdapter<Product, RelatedProductAdapter.Product
                 itemClickListener(product)
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
