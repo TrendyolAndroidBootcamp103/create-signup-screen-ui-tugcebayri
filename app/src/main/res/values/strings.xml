@@ -29,4 +29,5 @@
     <string name="retry">Retry</string>
     <string name="unexpected_error_occurred">Unexpected error occurred</string>
     <string name="your_session_is_expired">Your session is expired. Please log in.</string>
+    <string name="logout">Log out</string>
 </resources>
