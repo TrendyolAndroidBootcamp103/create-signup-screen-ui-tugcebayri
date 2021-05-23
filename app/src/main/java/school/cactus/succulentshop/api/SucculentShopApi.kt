@@ -13,6 +13,6 @@ interface SucculentShopApi {
     fun login(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
     @POST("/auth/local/register")
-    fun login(@Body registerRequest: RegisterRequest): Call<RegisterResponse>
+    fun register(@Body registerRequest: RegisterRequest): Call<RegisterResponse>
 
 }

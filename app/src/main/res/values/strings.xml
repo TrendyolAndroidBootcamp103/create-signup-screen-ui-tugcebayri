@@ -25,4 +25,7 @@
     <string name="password_must_contain_one_uppercase_letter">Password must contain one uppercase letter</string>
     <string name="password_must_contain_at_least_one_special_character">Password must contain at least one special character</string>
     <string name="related_products">Related Products:</string>
+    <string name="check_your_connection">Please check your connection and try again.</string>
+    <string name="retry">Retry</string>
+    <string name="unexpected_error_occurred">Unexpected error occurred</string>
 </resources>
