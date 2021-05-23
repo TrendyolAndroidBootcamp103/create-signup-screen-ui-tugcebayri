@@ -7,19 +7,19 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import school.cactus.succulentshop.databinding.RelatedProductsBinding
-import school.cactus.succulentshop.product.list.Product
+import school.cactus.succulentshop.product.ProductItem
 
-class RelatedProductAdapter : ListAdapter<Product, RelatedProductAdapter.ProductHolder>(
+class RelatedProductAdapter : ListAdapter<ProductItem, RelatedProductAdapter.ProductHolder>(
     DIFF_CALLBACK
 ) {
 
-    var itemClickListener: (Product) -> Unit = {}
+    var itemClickListener: (ProductItem) -> Unit = {}
 
     class ProductHolder(
         private val binding: RelatedProductsBinding,
-        private val itemClickListener: (Product) -> Unit
+        private val itemClickListener: (ProductItem) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(product: Product) {
+        fun bind(product: ProductItem) {
             binding.titleText.text = product.title
             binding.priceText.text = product.price
 
@@ -48,11 +48,12 @@ class RelatedProductAdapter : ListAdapter<Product, RelatedProductAdapter.Product
     }
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Product>() {
-            override fun areItemsTheSame(oldItem: Product, newItem: Product) =
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ProductItem>() {
+            override fun areItemsTheSame(oldItem: ProductItem, newItem: ProductItem) =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Product, newItem: Product) = oldItem == newItem
+            override fun areContentsTheSame(oldItem: ProductItem, newItem: ProductItem) =
+                oldItem == newItem
         }
     }
 }

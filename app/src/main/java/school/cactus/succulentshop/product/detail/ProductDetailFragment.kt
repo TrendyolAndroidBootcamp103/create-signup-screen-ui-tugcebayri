@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import school.cactus.succulentshop.R
 import school.cactus.succulentshop.databinding.FragmentProductDetailBinding
 import school.cactus.succulentshop.product.BUNDLE_KEY_PRODUCT_ID
-import school.cactus.succulentshop.product.list.Product
+import school.cactus.succulentshop.product.ProductItem
 import school.cactus.succulentshop.product.list.ProductStore
 
 class ProductDetailFragment : Fragment() {
@@ -39,10 +40,13 @@ class ProductDetailFragment : Fragment() {
         val product = store.findProduct(productId)
 
         binding.apply {
-            imageView.setImageResource(product.imageUrl)
             titleText.text = product.title
             priceText.text = product.price
             descriptionText.text = product.description
+
+            Glide.with(binding.root)
+                .load(product.imageUrl)
+                .into(imageView)
         }
 
         binding.productDetailRecyclerView.adapter = adapter
@@ -65,8 +69,8 @@ class ProductDetailFragment : Fragment() {
         _binding = null
     }
 
-    fun getRandomRelatedProductList(list: List<Product>): List<Product> {
-        val s: MutableSet<Product> = mutableSetOf()
+    fun getRandomRelatedProductList(list: List<ProductItem>): List<ProductItem> {
+        val s: MutableSet<ProductItem> = mutableSetOf()
         while (s.size < 4) {
             var x = (0..7).random()
 
