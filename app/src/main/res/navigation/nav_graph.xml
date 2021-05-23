@@ -58,4 +58,8 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/nav_graph" />
     </fragment>
+    <action
+        android:id="@+id/tokenExpired"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/nav_graph" />
 </navigation>
