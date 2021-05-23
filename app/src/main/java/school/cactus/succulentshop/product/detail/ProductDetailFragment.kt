@@ -85,7 +85,7 @@ class ProductDetailFragment : Fragment() {
             titleText.text = productItem.title
             priceText.text = productItem.price
             descriptionText.text = productItem.description
-            productListProgressBar.visibility = View.GONE
+            productDetailProgressBar.visibility = View.GONE
 
             Glide.with(binding.root)
                 .load(productItem.highResImageUrl)

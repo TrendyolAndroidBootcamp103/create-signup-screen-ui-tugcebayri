@@ -24,7 +24,6 @@ class ProductListFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val adapter = ProductAdapter()
-    //private val store = ProductStore()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,6 +90,7 @@ class ProductListFragment : Fragment() {
 
     private fun onSuccess(products: List<Product>) {
         adapter.submitList(products.toProductItemList())
+        binding.productListProgressBar.visibility = View.GONE
     }
 
     private fun onUnexpectedError() {
