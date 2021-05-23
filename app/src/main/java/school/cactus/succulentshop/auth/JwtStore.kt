@@ -18,6 +18,8 @@ class JwtStore(context: Context) {
         remove(PREFS_KEY_JWT)
     }
 
+    fun isExistsJwt() = prefs.contains(PREFS_KEY_JWT)
+
     companion object {
         const val PREFS_FILE_NAME = "jwt_store"
         const val PREFS_KEY_JWT = "jwt"

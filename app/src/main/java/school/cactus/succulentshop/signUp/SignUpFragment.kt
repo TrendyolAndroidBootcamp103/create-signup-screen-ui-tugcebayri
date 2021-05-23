@@ -42,6 +42,11 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
+
+        if (JwtStore(requireContext()).isExistsJwt()) {
+            findNavController().navigate(R.id.action_signUpFragment_to_productListFragment)
+        }
+
         return binding.root
     }
 
