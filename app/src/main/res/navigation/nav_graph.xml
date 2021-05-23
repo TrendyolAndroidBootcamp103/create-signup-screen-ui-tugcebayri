@@ -32,7 +32,7 @@
         android:name="school.cactus.succulentshop.product.detail.ProductDetailFragment"
         android:label="ProductDetailFragment">
         <action
-            android:id="@+id/action_productDetailFragment_self"
+            android:id="@+id/actionProductDetailFragmentSelf"
             app:destination="@id/productDetailFragment" />
         <argument
             android:name="productId"

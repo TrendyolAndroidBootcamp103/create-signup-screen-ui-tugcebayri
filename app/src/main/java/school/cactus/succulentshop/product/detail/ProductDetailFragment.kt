@@ -8,17 +8,23 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import school.cactus.succulentshop.R
+import school.cactus.succulentshop.api.api
+import school.cactus.succulentshop.api.product.Product
+import school.cactus.succulentshop.api.product.RelatedProducts
 import school.cactus.succulentshop.databinding.FragmentProductDetailBinding
-import school.cactus.succulentshop.product.ProductItem
-import school.cactus.succulentshop.product.list.ProductStore
+import school.cactus.succulentshop.product.toProductItem
+import school.cactus.succulentshop.product.toProductItemList
 
 class ProductDetailFragment : Fragment() {
     private var _binding: FragmentProductDetailBinding? = null
 
     private val binding get() = _binding!!
-
-    private val store = ProductStore()
 
     private val adapter = RelatedProductAdapter()
 
@@ -38,26 +44,12 @@ class ProductDetailFragment : Fragment() {
 
         requireActivity().title = getString(R.string.app_name)
 
-        val product = store.findProduct(args.productId)
-
-        binding.apply {
-            titleText.text = product.title
-            priceText.text = product.price
-            descriptionText.text = product.description
-
-            Glide.with(binding.root)
-                .load(product.imageUrl)
-                .into(imageView)
-        }
+        fetchProduct()
 
         binding.productDetailRecyclerView.adapter = adapter
-        //binding.productDetailRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        //binding.productDetailRecyclerView.layoutManager = StaggeredGridLayoutManager(1,HORIZONTAL)
-        adapter.submitList(store.products)
         binding.productDetailRecyclerView.addItemDecoration(RelatedProductDecoration())
 
-        var randomList = getRandomRelatedProductList(store.products)
-        adapter.submitList(randomList)
+        fetchRelatedProducts()
 
         adapter.itemClickListener = {
             val action = ProductDetailFragmentDirections.actionProductDetailFragmentSelf(it.id)
@@ -65,20 +57,91 @@ class ProductDetailFragment : Fragment() {
         }
     }
 
+    private fun fetchProduct() {
+        api.getProductById(args.productId).enqueue(object : Callback<Product> {
+            override fun onResponse(call: Call<Product>, response: Response<Product>) {
+                when (response.code()) {
+                    200 -> onSuccess(response.body()!!)
+                    401 -> onTokenExpired()
+                    else -> onUnexpectedError()
+                }
+            }
+
+            override fun onFailure(call: Call<Product>, t: Throwable) {
+                Snackbar.make(
+                    binding.root, R.string.check_your_connection,
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction(R.string.retry) {
+                    fetchProduct()
+                }.show()
+            }
+        })
+    }
+
+    private fun onSuccess(product: Product) {
+        val productItem = product.toProductItem()
+
+        binding.apply {
+            titleText.text = productItem.title
+            priceText.text = productItem.price
+            descriptionText.text = productItem.description
+
+            Glide.with(binding.root)
+                .load(productItem.highResImageUrl)
+                .into(imageView)
+        }
+    }
+
+    private fun fetchRelatedProducts() {
+        api.getRelatedProductsById(args.productId).enqueue(object : Callback<RelatedProducts> {
+            override fun onResponse(
+                call: Call<RelatedProducts>,
+                response: Response<RelatedProducts>
+            ) {
+                when (response.code()) {
+                    200 -> onSuccess(response.body()!!)
+                    401 -> onTokenExpired()
+                    else -> onUnexpectedError()
+                }
+            }
+
+            override fun onFailure(call: Call<RelatedProducts>, t: Throwable) {
+                Snackbar.make(
+                    binding.root, R.string.check_your_connection,
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction(R.string.retry) {
+                    fetchRelatedProducts()
+                }.show()
+            }
+        })
+    }
+
+    private fun onSuccess(relatedProducts: RelatedProducts) {
+        adapter.submitList(relatedProducts.products.toProductItemList())
+    }
+
+    private fun onTokenExpired() {
+        Snackbar.make(
+            binding.root, R.string.your_session_is_expired,
+            Snackbar.LENGTH_INDEFINITE
+        ).setAction(R.string.log_in) {
+            navigateToLogin()
+        }.show()
+    }
+
+    private fun navigateToLogin() = findNavController().navigate(R.id.tokenExpired)
+
+    private fun onUnexpectedError() {
+        Snackbar.make(
+            binding.root, R.string.unexpected_error_occurred,
+            BaseTransientBottomBar.LENGTH_LONG
+        ).show()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    fun getRandomRelatedProductList(list: List<ProductItem>): List<ProductItem> {
-        val s: MutableSet<ProductItem> = mutableSetOf()
-        while (s.size < 4) {
-            var x = (0..7).random()
-
-            if (x == id) continue
-            else s.add(list[x])
-        }
-        return s.toList()
-    }
 }
 

@@ -8,14 +8,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import school.cactus.succulentshop.databinding.RelatedProductsBinding
 import school.cactus.succulentshop.product.ProductItem
+import school.cactus.succulentshop.product.detail.RelatedProductAdapter.RelatedProductHolder
 
-class RelatedProductAdapter : ListAdapter<ProductItem, RelatedProductAdapter.ProductHolder>(
-    DIFF_CALLBACK
-) {
+class RelatedProductAdapter : ListAdapter<ProductItem, RelatedProductHolder>(DIFF_CALLBACK) {
 
     var itemClickListener: (ProductItem) -> Unit = {}
 
-    class ProductHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RelatedProductHolder {
+        val binding = RelatedProductsBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return RelatedProductHolder(binding, itemClickListener)
+    }
+
+    override fun onBindViewHolder(holder: RelatedProductHolder, position: Int) =
+        holder.bind(getItem(position))
+
+    class RelatedProductHolder(
         private val binding: RelatedProductsBinding,
         private val itemClickListener: (ProductItem) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -32,19 +43,6 @@ class RelatedProductAdapter : ListAdapter<ProductItem, RelatedProductAdapter.Pro
                 itemClickListener(product)
             }
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
-        val binding = RelatedProductsBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ProductHolder(binding, itemClickListener)
-    }
-
-    override fun onBindViewHolder(holder: ProductHolder, position: Int) {
-        holder.bind(getItem(position))
     }
 
     companion object {
