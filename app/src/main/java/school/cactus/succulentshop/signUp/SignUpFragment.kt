@@ -16,10 +16,11 @@ class SignUpFragment : BaseFragment() {
 
     private val binding get() = _binding!!
 
-    private val store = JwtStore(requireContext())
-
     override val viewModel: SignUpViewModel by viewModels {
-        SignUpViewModelFactory(store)
+        SignUpViewModelFactory(
+            store = JwtStore(requireContext()),
+            repository = SignUpRepository()
+        )
     }
 
     override fun onCreateView(

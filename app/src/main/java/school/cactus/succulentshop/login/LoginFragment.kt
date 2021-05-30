@@ -15,10 +15,11 @@ class LoginFragment : BaseFragment() {
 
     private val binding get() = _binding!!
 
-    private val store = JwtStore(requireContext())
-
     override val viewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(store)
+        LoginViewModelFactory(
+            store = JwtStore(requireContext()),
+            repository = LoginRepository()
+        )
     }
 
     override fun onCreateView(
