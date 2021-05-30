@@ -29,7 +29,7 @@ class SignUpFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         if (JwtStore(requireContext()).isExistsJwt()) {
